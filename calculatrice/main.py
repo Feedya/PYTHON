@@ -6,18 +6,22 @@ def calculer(expression: str) -> float:
     #replace(ancien, nouveau)
     expr = expression.replace(" ", "")
 
-    #la c est comme un throw en cpp
-    if not expr:
+    if expr == "":
+        #la c est comme un throw en cpp
         raise ValueError("vide")
 
     if "(" in expr or ")" in expr:
         raise ValueError("parenthese interdit")
 
-    operateurs_valides = set("+-*/")
+    #un set en python est un type de variable
+    #elle ne peut pas avoir de douublons, et n est pas indexable
+    #dans notre cas comme on lui donne une string il va decouper charactere par charactere
+    operateurs_valides: set = set("+-*/")
 
     # les [] c est une liste
     nombres = []
     operateurs = []
+    #le tampon va nous servir de juste voir si notre calculs se finit bien par un nombre
     tampon = ""
 
     #----------------------------------------------------------------
@@ -29,15 +33,17 @@ def calculer(expression: str) -> float:
             tampon += caractere
         #si operators
         elif caractere in operateurs_valides:
-            if not tampon:
-                raise ValueError("charactere bizzare dans calculs")
+            if tampon == "":
+                raise ValueError("ca commence par operator, c est faux")
+            #on prend le nombre
             nombres.append(float(tampon))
+            #on prend l operator
             operateurs.append(caractere)
             tampon = ""
         else:
             raise ValueError("Cas cheloux qui normalement devrait pas arriver")
     #si ca se finit par un operator
-    if not tampon:
+    if tampon == "":
         raise ValueError("bomboclat un operator a la fin")
     nombres.append(float(tampon))
 
